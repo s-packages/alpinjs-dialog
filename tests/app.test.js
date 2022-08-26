@@ -23,6 +23,6 @@ let test = data
   .arrayInArray("range", [1, 4, 10])
   .arrayNotInArray("range", [7])
   .orderBy("id", "asc")
-  .first();
+  .groupBy("name");
 
 console.log(test);

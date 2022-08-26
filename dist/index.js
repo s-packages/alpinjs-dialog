@@ -208,4 +208,30 @@ export default class Collection {
     });
     return this;
   }
+  push(data) {
+    this.data.push(data instanceof Collection ? data.data : data);
+  }
+  delete() {
+    return this.data?.filter((item, index) => {
+      return !Object.keys(this.query).map((key) => {
+        return this.query[key].map((query) => {
+          return !!this._condition(item, query);
+        }).every((value) => value === true);
+      }).every((value) => value === true);
+    });
+  }
+  margeLeft(data) {
+    this.data = data instanceof Collection ? data.data.concat(this.data) : data.concat(this.data);
+  }
+  margeRight(data) {
+    this.data = this.data.concat(data instanceof Collection ? data.data : data);
+  }
+  groupBy(field) {
+    let data = new Object();
+    this._exec().map((item, index) => {
+      const fieldName = item[field] ?? index;
+      Array.isArray(data[fieldName]) ? data[fieldName].push(item) : data[fieldName] = [item];
+    });
+    return data;
+  }
 }

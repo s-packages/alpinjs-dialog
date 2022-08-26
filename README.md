@@ -1,6 +1,6 @@
 
 # S-Controller.js
-New way to work with array
+New way to work with array object
 ## Authors
 
 - [@tasvet](https://www.npmjs.com/~tasvet)
@@ -17,9 +17,9 @@ New way to work with array
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
 
-## Documentation
+## Demo
 
-[Documentation](https://linktodocumentation)
+Demo link : [Click here](https://codesandbox.io/s/s-collection-js-test-in-angular-98574p?file=/src/app/app.component.ts)
 
 
 ## Installation
@@ -33,7 +33,7 @@ Install s-event.js with npm
 ## Usage/Examples
 import : 
 ```
-    import Collection from "s-collection.js";
+  import Collection from "s-collection.js";
 ```
 Usage :
 ```
@@ -65,12 +65,6 @@ let test = data
 console.log(test);
 // { id: 8, name: "Jenny", range: [4, 8] }
 ```
-## Related
-
-Here are some related projects
-
-[Awesome README](https://github.com/matiassingers/awesome-readme)
-
 
 ## Attributes
 | Name   |      arguments      |  description |
@@ -108,3 +102,10 @@ Here are some related projects
 ||localKey : \<string\>||
 ||foreignKey : \<string\>||
 ||fieldName : \<string\> ||
+| orderBy(field, type) | field : \<string \| Array\> | order by item in Collection |
+||type : \<string \| Array\<asc \| desc\>\> ||
+| push(data) |data : \<Collection \| Object \| Array\> | push data in to Collection | 
+| delete() || delete item from Collection ( can with condition ) |
+| margeLeft(data) | data : \<Collection \| Array\> |merge array to start of Collection|
+| margeRight(data) | data : \<Collection \| Array\> |merge array to end of Collection|
+| margeRight(field) | field : \<string\> |group by field name|
