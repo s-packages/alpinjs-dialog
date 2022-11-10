@@ -1,6 +1,6 @@
 {
   "name": "s-collection.js",
-  "version": "1.0.34",
+  "version": "1.0.36",
   "description": "make work easy with array object",
   "main": "dist/index.js",
   "type": "module",

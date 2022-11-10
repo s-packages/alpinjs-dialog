@@ -1,4 +1,4 @@
-import Collection from "../dist/index";
+import Collection from "../index";
 
 const data = new Collection([
   { id: 1, name: "John" },
@@ -14,15 +14,6 @@ const data = new Collection([
 ]);
 
 let test = data
-  .hasField("range")
-  .hasNotField("abc")
-  .if("id", ">", 1)
-  .if("id", "<", 10)
-  .ifNot("name", "Jill")
-  .inArray("id", [8, 1])
-  .arrayInArray("range", [1, 4, 10])
-  .arrayNotInArray("range", [7])
-  .orderBy("id", "asc")
-  .groupBy("name");
+  .groupBy("range");
 
 console.log(test);

@@ -108,4 +108,4 @@ console.log(test);
 | delete() || delete item from Collection ( can with condition ) |
 | margeLeft(data) | data : \<Collection \| Array\> |merge array to start of Collection|
 | margeRight(data) | data : \<Collection \| Array\> |merge array to end of Collection|
-| margeRight(field) | field : \<string\> |group by field name|
+| groupBy(field) | field : \<string\> |group by field name|

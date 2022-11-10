@@ -412,7 +412,7 @@ export default class Collection {
   groupBy(field) {
     let data = new Object();
     this._exec().map((item, index) => {
-      const fieldName = item[field] ?? index;
+      const fieldName = item[field] ?? null;
       Array.isArray(data[fieldName])
         ? data[fieldName].push(item)
         : (data[fieldName] = [item]);
