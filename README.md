@@ -20,6 +20,10 @@ Dialog component for Alpine.js
 
 Demo link : [Click here](https://codesandbox.io/s/alpinejs-dialog-demo-grd751)
 
+## Git Repo
+
+Github : [Click here](https://github.com/s-packages/alpinjs-dialog)
+
 ## Installation
 
 Install alpinjs-dialog with npm

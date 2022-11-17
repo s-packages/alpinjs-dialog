@@ -1,6 +1,6 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "description": "dialog for Alpinjs",
   "main": "dist/index.js",
   "style": "*.css",
