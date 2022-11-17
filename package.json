@@ -1,8 +1,9 @@
 {
-  "name": "s-collection.js",
-  "version": "1.0.36",
-  "description": "make work easy with array object",
+  "name": "alpinjs-dialog",
+  "version": "1.0.39",
+  "description": "dialog for Alpinjs",
   "main": "dist/index.js",
+  "style": "*.css",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,16 +14,24 @@
     "prod:watch": "esbuild  index.js --outfile=dist/index.js --watch"
   },
   "keywords": [
-    "s-collection.js"
+    "alpinjs-dialog",
+    "alpinjs"
   ],
   "author": "LY SARI",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "alpinejs": "^3.10.5",
+    "gsap": "^3.11.3",
+    "rollup": "^3.3.0",
+    "rollup-plugin-import-css": "^3.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.15.5",
     "nodemon": "^2.0.19",
+    "sass": "^1.56.1",
     "vite": "^3.0.8"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
