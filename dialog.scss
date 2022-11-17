@@ -1,0 +1,52 @@
+.dialog {
+    position             : fixed;
+    top                  : 0;
+    left                 : 0;
+    bottom               : 0;
+    right                : 0;
+    background           : rgba($color: #000000, $alpha: .3);
+    display              : flex;
+    align-items          : center;
+    justify-content      : center;
+    box-shadow           : 0 10px 15px rgba($color: #000000, $alpha: .1);
+    box-sizing           : border-box;
+    background-blend-mode: overlay;
+    overflow             : hidden;
+    opacity              : 0;
+
+    &[dialog-position=right] {
+        justify-content: flex-end;
+
+        .dialog-container {
+            height    : 100vh;
+            box-sizing: border-box;
+        }
+    }
+
+    &[dialog-position=left] {
+        justify-content: flex-start;
+
+        .dialog-container {
+            height    : 100vh;
+            box-sizing: border-box;
+        }
+    }
+
+    .dialog-wrapper {
+        width          : 100%;
+        max-height     : 100%;
+        padding        : 10px 0;
+        overflow       : auto;
+        display        : flex;
+        justify-content: center;
+    }
+
+    .dialog-container {
+        background   : #fff;
+        width        : fit-content;
+        height       : fit-content;
+        padding      : 25px;
+        border-radius: 8px;
+
+    }
+}
