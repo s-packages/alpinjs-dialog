@@ -1,7 +1,7 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.40",
-  "description": "dialog for Alpinjs",
+  "version": "1.0.42",
+  "description": "dialog for AlpineJS",
   "main": "dist/index.js",
   "style": "*.css",
   "type": "module",
@@ -15,15 +15,21 @@
   },
   "keywords": [
     "alpinjs-dialog",
-    "alpinjs"
+    "alpinjs",
+    "dialog",
+    "alpinejs",
+    "modal",
+    "alpine",
+    "alpinejs-dialog",
+    "alpinejs-modal",
+    "alpinejs-dialog",
+    "npm"
   ],
   "author": "LY SARI",
   "license": "ISC",
   "dependencies": {
     "alpinejs": "^3.10.5",
-    "gsap": "^3.11.3",
-    "rollup": "^3.3.0",
-    "rollup-plugin-import-css": "^3.1.0"
+    "gsap": "^3.11.3"
   },
   "devDependencies": {
     "esbuild": "^0.15.5",

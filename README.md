@@ -57,6 +57,7 @@ import :
   <button @click="$dialog('dialogName').open()">Show Dialog</button>
   // or
   this.$dialog("dialogName").open({
+      addClass: ["custom-class-1", "custom-class-2"], //class as array
       data: null, // pass data into dialog
       config: {
         width: "500px", // dialog width
