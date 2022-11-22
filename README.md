@@ -84,5 +84,21 @@ import :
 
     // close dialog
     this.$dialog("dialogName").close(/* return something after close here */);
-    
+
+    //event listener
+    this.$dialog("dialogName")
+      .target
+      .addEventListener("dialogReady", (e) => {
+          // dialog is ready
+          console.log("dialogReady", e.detail);
+        }
+      );
+
+     this.$dialog("dialogName")
+      .target
+      .addEventListener("dialogClose", (e) => {
+          // dialog is closed
+          console.log("dialogClosed", e.detail);
+        }
+      );
 ```
