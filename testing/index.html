@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Collection.js</title>
+    <script type="module" src="./test.js"></script>
+  </head>
+  <body>
+    <div x-data="demo">
+      <button @click="openDialog">Show Dialog</button>
+
+      <template x-dialog="dialogName">
+        <div x-data="dialog" class="demo">
+          <h1>Dialog Working!</h1>
+          <p>Click Away to close</p>
+          <button @click="close">Close Dialog</button>
+        </div>
+        <script>
+          Alpine.data("dialog", () => ({
+            init() {
+              console.log("dialog init", this.$dialog("dialogName").data());
+            },
+            close() {
+              this.$dialog("dialogName").close(true);
+            },
+          }));
+        </script>
+      </template>
+    </div>
+  </body>
+</html>

@@ -8,15 +8,19 @@ export default function (Alpine) {
       if (!value) {
         let dialog = dialogs[expression];
         let clone = el.content.cloneNode(true);
+
         let container = document.createElement("div");
         container.classList.add("dialog-container");
         container.appendChild(clone);
+
         let content = document.createElement("div");
         content.classList.add("dialog-content");
         content.appendChild(container);
+
         let main = document.createElement("div");
         main.classList.add("dialog");
         main.appendChild(content);
+
         if (!dialog) {
           dialog = dialogs[expression] = {
             show: false,
@@ -36,9 +40,15 @@ export default function (Alpine) {
         el.remove();
         return;
       }
-      effect(() => {});
+
+      effect(() => {
+        if (dialogs[expression].show) {
+          // dialog changes
+        }
+      });
     }
   );
+
   Alpine.magic("dialog", (el) => (name) => {
     const dialog = dialogs[name];
     return {
@@ -51,6 +61,7 @@ export default function (Alpine) {
           ...config.config,
         };
         dialog.data = config.data ?? null;
+        dialog["addClass"] = config.addClass ?? null;
         dialog.show = true;
         onDialogOpen(dialog);
       },
@@ -58,15 +69,18 @@ export default function (Alpine) {
         onDialogClose(dialog, data);
       },
       data() {
-        return dialog.data;
+        return dialog?.data;
       },
+      ready() {},
     };
   });
 }
+
 function onDialogOpen(dialog) {
   clickAway(dialog.el, () => {
     if (dialog.config.backdrop) onDialogClose(dialog);
   });
+  addClass(dialog.el, dialog?.addClass);
   dialog.el.setAttribute("x-dialog:show", dialog.name);
   dialog.el.setAttribute("dialog-position", dialog.config.position);
   dialog.el.style.zIndex = getLastIndex();
@@ -78,14 +92,25 @@ function onDialogOpen(dialog) {
     dialog.afterOpen(dialog);
   });
 }
+
 function onDialogClose(dialog, data) {
   dialog.beforeClose(dialog);
+
   animate().leave(dialog.el, () => {
     dialog.show = false;
     dialog.el.remove();
     dialog.afterClose(data);
   });
 }
+
+function addClass(el, _class = []) {
+  if (Array.isArray(_class)) {
+    _class.forEach((c) => {
+      el.classList.add(c);
+    });
+  }
+}
+
 function clickAway(el, callback) {
   const container = el.querySelector(".dialog-container");
   const clickHandler = (e) => {
@@ -99,6 +124,7 @@ function clickAway(el, callback) {
     el.removeEventListener("click", clickHandler);
   };
 }
+
 function animate() {
   return {
     enter: (target, fn) => {
@@ -133,6 +159,7 @@ function animate() {
     },
   };
 }
+
 function getLastIndex() {
   return (
     Math.max(
