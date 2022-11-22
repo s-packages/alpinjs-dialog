@@ -50,8 +50,15 @@ export default function (Alpine) {
   );
 
   Alpine.magic("dialog", (el) => (name) => {
+    if (typeof name == "function") {
+      setTimeout(() => {
+        name();
+      }, 500);
+      return;
+    }
     const dialog = dialogs[name];
     return {
+      target: dialog?.el,
       open(config = {}) {
         dialog["afterOpen"] = config.afterOpen ?? dialog.afterOpen;
         dialog["afterClose"] = config.afterClose ?? dialog.afterClose;
@@ -71,10 +78,23 @@ export default function (Alpine) {
       data() {
         return dialog?.data;
       },
-      ready() {},
     };
   });
 }
+
+//bind event to dialog
+const EVENT = {
+  onReady: function (dialog) {
+    return new CustomEvent("dialogReady", {
+      detail: dialog,
+    });
+  },
+  onClose: function (dialog) {
+    return new CustomEvent("dialogClose", {
+      detail: dialog,
+    });
+  },
+};
 
 function onDialogOpen(dialog) {
   clickAway(dialog.el, () => {
@@ -90,6 +110,7 @@ function onDialogOpen(dialog) {
   document.body.appendChild(dialog.el);
   animate().enter(dialog.el, () => {
     dialog.afterOpen(dialog);
+    dialog.el.dispatchEvent(EVENT.onReady(dialog));
   });
 }
 
@@ -100,6 +121,7 @@ function onDialogClose(dialog, data) {
     dialog.show = false;
     dialog.el.remove();
     dialog.afterClose(data);
+    dialog.el.dispatchEvent(EVENT.onClose(dialog));
   });
 }
 

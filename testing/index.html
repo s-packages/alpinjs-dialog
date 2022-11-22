@@ -20,6 +20,13 @@
         <script>
           Alpine.data("dialog", () => ({
             init() {
+              this.$dialog("dialogName").target.addEventListener(
+                "dialogReady",
+                (e) => {
+                  // dialog is ready
+                  console.log("dialogReady", e.detail);
+                }
+              );
               console.log("dialog init", this.$dialog("dialogName").data());
             },
             close() {

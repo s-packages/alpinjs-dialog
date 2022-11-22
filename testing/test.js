@@ -4,6 +4,15 @@ Alpine.plugin(dialog);
 window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
+  init() {
+    this.$dialog(() => { // wait for dialog created
+      this.$dialog("dialogName").target.addEventListener("dialogClose", (e) => {
+        // dialog is closed
+        console.log("dialogClose", e.detail);
+      });
+      this.openDialog();
+    });
+  },
   openDialog() {
     this.$dialog("dialogName").open({
       addClass: ["custom-class-1", "custom-class-2"], //class as array
