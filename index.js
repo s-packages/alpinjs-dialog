@@ -14,7 +14,7 @@ export default function (Alpine) {
         container.appendChild(clone);
 
         let content = document.createElement("div");
-        content.classList.add("dialog-content");
+        content.classList.add("dialog-wrapper");
         content.appendChild(container);
 
         let main = document.createElement("div");

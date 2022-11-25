@@ -15,20 +15,20 @@
     opacity              : 0;
 }
 
-.dialog[dialog-position=right] {
+.dialog[dialog-position=right] .dialog-wrapper {
     justify-content: flex-end;
 }
 
-.dialog[dialog-position=right] .dialog-container {
+.dialog[dialog-position=right] .dialog-wrapper .dialog-container {
     height    : 100vh;
     box-sizing: border-box;
 }
 
-.dialog[dialog-position=left] {
+.dialog[dialog-position=left] .dialog-wrapper {
     justify-content: flex-start;
 }
 
-.dialog[dialog-position=left] .dialog-container {
+.dialog[dialog-position=left] .dialog-wrapper .dialog-container {
     height    : 100vh;
     box-sizing: border-box;
 }
