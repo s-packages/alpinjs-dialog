@@ -15,20 +15,26 @@
     opacity              : 0;
 
     &[dialog-position=right] {
-        justify-content: flex-end;
 
-        .dialog-container {
-            height    : 100vh;
-            box-sizing: border-box;
+        .dialog-wrapper {
+            justify-content: flex-end;
+
+            .dialog-container {
+                height    : 100vh;
+                box-sizing: border-box;
+            }
         }
     }
 
     &[dialog-position=left] {
-        justify-content: flex-start;
+        
+        .dialog-wrapper {
+            justify-content: flex-start;
 
-        .dialog-container {
-            height    : 100vh;
-            box-sizing: border-box;
+            .dialog-container {
+                height    : 100vh;
+                box-sizing: border-box;
+            }
         }
     }
 
