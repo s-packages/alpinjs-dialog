@@ -57,6 +57,7 @@ export default function (Alpine) {
       return;
     }
     const dialog = dialogs[name];
+    if (!dialog) throw new Error(`Dialog ${name} not found`);
     return {
       target: dialog?.el,
       open(config = {}) {
@@ -101,6 +102,7 @@ function onDialogOpen(dialog) {
     if (dialog.config.backdrop) onDialogClose(dialog);
   });
   addClass(dialog.el, dialog?.addClass);
+  overlayBlur(dialog.el, dialog?.config?.blur);
   dialog.el.setAttribute("x-dialog:show", dialog.name);
   dialog.el.setAttribute("dialog-position", dialog.config.position);
   dialog.el.style.zIndex = getLastIndex();
@@ -108,7 +110,7 @@ function onDialogOpen(dialog) {
   container.style.width = dialog.config.width;
   container.style.height = dialog.config.height;
   document.body.appendChild(dialog.el);
-  animate().enter(dialog.el, () => {
+  animate(dialog?.config?.animate).enter(dialog.el, () => {
     dialog.afterOpen(dialog);
     dialog.el.dispatchEvent(EVENT.onReady(dialog));
   });
@@ -147,18 +149,22 @@ function clickAway(el, callback) {
   };
 }
 
-function animate() {
+function overlayBlur(element, value = 0) {
+  element.style.backdropFilter = `blur(${value}px)`;
+}
+
+function animate(option = {}) {
   return {
     enter: (target, fn) => {
       gsap.to(target, {
         autoAlpha: 1,
-        duration: 0.2,
+        duration: option?.enter ?? 0.2,
       });
       gsap
         .fromTo(
           target.querySelector(".dialog-container"),
           { scale: 0.8, autoAlpha: 0 },
-          { scale: 1, autoAlpha: 1, duration: 0.2 }
+          { scale: 1, autoAlpha: 1, duration: option?.enter ?? 0.2 }
         )
         .eventCallback("onComplete", () => {
           fn ? fn(target) : null;
@@ -169,14 +175,14 @@ function animate() {
         .to(target.querySelector(".dialog-container"), {
           scale: 0.8,
           autoAlpha: 0,
-          duration: 0.2,
+          duration: option?.leave ?? 0.2,
         })
         .eventCallback("onComplete", () => {
           fn ? fn(target) : null;
         });
       gsap.to(target, {
         autoAlpha: 0,
-        duration: 0.2,
+        duration: option?.leave ?? 0.2,
       });
     },
   };

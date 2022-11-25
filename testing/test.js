@@ -5,7 +5,8 @@ window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
   init() {
-    this.$dialog(() => { // wait for dialog created
+    this.$dialog(() => {
+      // wait for dialog created
       this.$dialog("dialogName").target.addEventListener("dialogClose", (e) => {
         // dialog is closed
         console.log("dialogClose", e.detail);
@@ -24,6 +25,11 @@ Alpine.data("demo", () => ({
         height: "100vh",
         position: "right", // center , left, right
         backdrop: true, //set true click away to close
+        blur: 13, //set true to blur overlay,
+        animate: {
+          enter: 0.2, // seconds
+          leave: 0.2, // seconds
+        },
       },
       afterOpen: (dialog) => {
         console.log("after dialog opened", dialog);
