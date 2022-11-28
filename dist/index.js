@@ -24,7 +24,8 @@ export default function (Alpine) {
         if (!dialog) {
           dialog = dialogs[expression] = {
             show: false,
-            el: main,
+            mainElement: main,
+            el: main.cloneNode(true),
             data: null,
             config: {
               width: "80vw",
@@ -122,6 +123,7 @@ function onDialogClose(dialog, data) {
   animate().leave(dialog.el, () => {
     dialog.show = false;
     dialog.el.remove();
+    dialog.el = dialog.mainElement.cloneNode(true);
     dialog.afterClose(data);
     dialog.el.dispatchEvent(EVENT.onClose(dialog));
   });
