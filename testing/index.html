@@ -16,6 +16,7 @@
           <h1>Dialog Working!</h1>
           <p>Click Away to close</p>
           <button @click="close">Close Dialog</button>
+          <button @click="appendText">Append Text</button>
         </div>
         <script>
           Alpine.data("dialog", () => ({
@@ -28,6 +29,11 @@
                 }
               );
               console.log("dialog init", this.$dialog("dialogName").data());
+            },
+            appendText() {
+              const child = document.createElement("p");
+              child.innerText = "Hello World";
+              this.$root.appendChild(child)
             },
             close() {
               this.$dialog("dialogName").close(true);
