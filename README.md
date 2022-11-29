@@ -70,6 +70,9 @@ import :
           leave: 0.2, // seconds
         },
       },
+      props: {
+        click: this.counter.bind(this), // dialog props
+      },
       afterOpen: (dialog) => {
         // callback after dialog open
         console.log("after dialog opened", dialog);
@@ -106,4 +109,7 @@ import :
           console.log("dialogClosed", e.detail);
         }
       );
+
+    // props 
+    this.$dialog("dialogName").props.click(1);
 ```
