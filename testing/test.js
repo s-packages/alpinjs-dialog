@@ -4,6 +4,7 @@ Alpine.plugin(dialog);
 window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
+  count: 0,
   init() {
     this.$dialog(() => {
       // wait for dialog created
@@ -25,11 +26,14 @@ Alpine.data("demo", () => ({
         height: "100vh",
         position: "right", // center , left, right
         backdrop: true, //set true click away to close
-        blur: 13, //set true to blur overlay,
+        blur: 0, //set true to blur overlay,
         animate: {
           enter: 0.2, // seconds
           leave: 0.2, // seconds
         },
+      },
+      props: {
+        click: this.counter.bind(this),
       },
       afterOpen: (dialog) => {
         console.log("after dialog opened", dialog);
@@ -41,6 +45,9 @@ Alpine.data("demo", () => ({
         console.log("after dialog closed", dialog);
       },
     });
+  },
+  counter(value) {
+    this.count += value;
   },
 }));
 

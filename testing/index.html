@@ -10,6 +10,7 @@
   <body>
     <div x-data="demo">
       <button @click="openDialog">Show Dialog</button>
+      <span x-text="count"></span>
 
       <template x-dialog="dialogName">
         <div x-data="dialog" class="demo">
@@ -17,6 +18,7 @@
           <p>Click Away to close</p>
           <button @click="close">Close Dialog</button>
           <button @click="appendText">Append Text</button>
+          <button @click="propsClick">Props Click</button>
         </div>
         <script>
           Alpine.data("dialog", () => ({
@@ -34,6 +36,9 @@
               const child = document.createElement("p");
               child.innerText = "Hello World";
               this.$root.appendChild(child)
+            },
+            propsClick(){
+              this.$dialog("dialogName").props.click(1);
             },
             close() {
               this.$dialog("dialogName").close(true);

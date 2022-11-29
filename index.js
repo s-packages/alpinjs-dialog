@@ -33,6 +33,7 @@ export default function (Alpine) {
               backdrop: true,
             },
             name: expression,
+            props: {},
             afterOpen: () => {},
             beforeClose: () => {},
             afterClose: () => {},
@@ -71,6 +72,7 @@ export default function (Alpine) {
         };
         dialog.data = config.data ?? null;
         dialog["addClass"] = config.addClass ?? null;
+        dialog["props"] = config.props ?? {};
         dialog.show = true;
         onDialogOpen(dialog);
       },
@@ -80,6 +82,7 @@ export default function (Alpine) {
       data() {
         return dialog?.data;
       },
+      props: dialog?.props,
     };
   });
 }
