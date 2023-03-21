@@ -21,17 +21,17 @@ Alpine.data("demo", () => ({
       data: {
         show: true,
       }, // pass data into dialog
-      config: {
-        width: "700px",
-        height: "100vh",
-        position: "right", // center , left, right
-        backdrop: true, //set true click away to close
-        blur: 0, //set true to blur overlay,
-        animate: {
-          enter: 0.2, // seconds
-          leave: 0.2, // seconds
-        },
-      },
+      // config: {
+      //   width: "700px",
+      //   height: "100vh",
+      //   position: "right", // center , left, right
+      //   backdrop: true, //set true click away to close
+      //   blur: 0, //set true to blur overlay,
+      //   animate: {
+      //     enter: 0.2, // seconds
+      //     leave: 0.2, // seconds
+      //   },
+      // },
       props: {
         click: this.counter.bind(this),
       },

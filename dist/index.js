@@ -1,6 +1,6 @@
 import gsap from "gsap";
-import "./style.css";
-export default function (Alpine) {
+import "./dist/style.css";
+export default function(Alpine) {
   let dialogs = Alpine.reactive({});
   Alpine.directive(
     "dialog",
@@ -8,19 +8,15 @@ export default function (Alpine) {
       if (!value) {
         let dialog = dialogs[expression];
         let clone = el.content.cloneNode(true);
-
         let container = document.createElement("div");
         container.classList.add("dialog-container");
         container.appendChild(clone);
-
         let content = document.createElement("div");
         content.classList.add("dialog-wrapper");
         content.appendChild(container);
-
         let main = document.createElement("div");
         main.classList.add("dialog");
         main.appendChild(content);
-
         if (!dialog) {
           dialog = dialogs[expression] = {
             show: false,
@@ -28,29 +24,34 @@ export default function (Alpine) {
             el: main.cloneNode(true),
             data: null,
             config: {
-              width: "80vw",
-              position: "center",
-              backdrop: true,
+              width: getConfig(el, "width"),
+              position: getConfig(el, "position"),
+              backdrop: getConfig(el, "backdrop"),
+              blur: getConfig(el, "blur"),
+              animate: {
+                enter: getConfig(el, "animateEnter"),
+                leave: getConfig(el, "animateLeave")
+              }
             },
             name: expression,
             props: {},
-            afterOpen: () => {},
-            beforeClose: () => {},
-            afterClose: () => {},
+            afterOpen: () => {
+            },
+            beforeClose: () => {
+            },
+            afterClose: () => {
+            }
           };
         }
         el.remove();
         return;
       }
-
       effect(() => {
         if (dialogs[expression].show) {
-          // dialog changes
         }
       });
     }
   );
-
   Alpine.magic("dialog", (el) => (name) => {
     if (typeof name == "function") {
       setTimeout(() => {
@@ -59,7 +60,8 @@ export default function (Alpine) {
       return;
     }
     const dialog = dialogs[name];
-    if (!dialog) throw new Error(`Dialog ${name} not found`);
+    if (!dialog)
+      throw new Error(`Dialog ${name} not found`);
     return {
       target: dialog?.el,
       open(config = {}) {
@@ -68,7 +70,7 @@ export default function (Alpine) {
         dialog["beforeClose"] = config.beforeClose ?? dialog.beforeClose;
         dialog["config"] = {
           ...dialog.config,
-          ...config.config,
+          ...config.config
         };
         dialog.data = config.data ?? null;
         dialog["addClass"] = config.addClass ?? null;
@@ -82,28 +84,26 @@ export default function (Alpine) {
       data() {
         return dialog?.data;
       },
-      props: dialog?.props,
+      props: dialog?.props
     };
   });
 }
-
-//bind event to dialog
 const EVENT = {
-  onReady: function (dialog) {
+  onReady: function(dialog) {
     return new CustomEvent("dialogReady", {
-      detail: dialog,
+      detail: dialog
     });
   },
-  onClose: function (dialog) {
+  onClose: function(dialog) {
     return new CustomEvent("dialogClose", {
-      detail: dialog,
+      detail: dialog
     });
-  },
+  }
 };
-
 function onDialogOpen(dialog) {
   clickAway(dialog.el, () => {
-    if (dialog.config.backdrop) onDialogClose(dialog);
+    if (dialog.config.backdrop)
+      onDialogClose(dialog);
   });
   addClass(dialog.el, dialog?.addClass);
   overlayBlur(dialog.el, dialog?.config?.blur);
@@ -119,10 +119,8 @@ function onDialogOpen(dialog) {
     dialog.el.dispatchEvent(EVENT.onReady(dialog));
   });
 }
-
 function onDialogClose(dialog, data) {
   dialog.beforeClose(dialog);
-
   animate().leave(dialog.el, () => {
     dialog.show = false;
     dialog.el.remove();
@@ -131,7 +129,6 @@ function onDialogClose(dialog, data) {
     dialog.el.dispatchEvent(EVENT.onClose(dialog));
   });
 }
-
 function addClass(el, _class = []) {
   if (Array.isArray(_class)) {
     _class.forEach((c) => {
@@ -139,11 +136,9 @@ function addClass(el, _class = []) {
     });
   }
 }
-
 function clickAway(el, callback) {
   const container = el.querySelector(".dialog-container");
   const clickHandler = (e) => {
-    console.log();
     if (!container.contains(e.target)) {
       callback();
     }
@@ -153,53 +148,56 @@ function clickAway(el, callback) {
     el.removeEventListener("click", clickHandler);
   };
 }
-
 function overlayBlur(element, value = 0) {
   element.style.backdropFilter = `blur(${value}px)`;
 }
-
 function animate(option = {}) {
   return {
     enter: (target, fn) => {
       gsap.to(target, {
         autoAlpha: 1,
-        duration: option?.enter ?? 0.2,
+        duration: option?.enter ?? 0.2
       });
-      gsap
-        .fromTo(
-          target.querySelector(".dialog-container"),
-          { scale: 0.8, autoAlpha: 0 },
-          { scale: 1, autoAlpha: 1, duration: option?.enter ?? 0.2 }
-        )
-        .eventCallback("onComplete", () => {
-          fn ? fn(target) : null;
-        });
+      gsap.fromTo(
+        target.querySelector(".dialog-container"),
+        { scale: 0.8, autoAlpha: 0 },
+        { scale: 1, autoAlpha: 1, duration: option?.enter ?? 0.2 }
+      ).eventCallback("onComplete", () => {
+        fn ? fn(target) : null;
+      });
     },
     leave: (target, fn) => {
-      gsap
-        .to(target.querySelector(".dialog-container"), {
-          scale: 0.8,
-          autoAlpha: 0,
-          duration: option?.leave ?? 0.2,
-        })
-        .eventCallback("onComplete", () => {
-          fn ? fn(target) : null;
-        });
+      gsap.to(target.querySelector(".dialog-container"), {
+        scale: 0.8,
+        autoAlpha: 0,
+        duration: option?.leave ?? 0.2
+      }).eventCallback("onComplete", () => {
+        fn ? fn(target) : null;
+      });
       gsap.to(target, {
         autoAlpha: 0,
-        duration: option?.leave ?? 0.2,
+        duration: option?.leave ?? 0.2
       });
-    },
+    }
   };
 }
-
 function getLastIndex() {
-  return (
-    Math.max(
-      ...Array.from(document.querySelectorAll("*"), (el) =>
-        parseFloat(window.getComputedStyle(el).zIndex)
-      ).filter((zIndex) => !Number.isNaN(zIndex)),
-      0
-    ) + 1
-  );
+  return Math.max(
+    ...Array.from(
+      document.querySelectorAll("*"),
+      (el) => parseFloat(window.getComputedStyle(el).zIndex)
+    ).filter((zIndex) => !Number.isNaN(zIndex)),
+    0
+  ) + 1;
+}
+function getConfig(el, name) {
+  let config = {
+    width: el.getAttribute(`width`) ?? "80vw",
+    position: el.getAttribute(`position`) ?? "center",
+    backdrop: el.getAttribute(`backdrop`) ?? true,
+    blur: el.getAttribute(`blur`) ?? 0,
+    animateEnter: el.getAttribute(`animate-enter`) ?? 0.2,
+    animateLeave: el.getAttribute(`animate-leave`) ?? 0.2
+  };
+  return config[name];
 }

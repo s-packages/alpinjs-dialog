@@ -28,9 +28,14 @@ export default function (Alpine) {
             el: main.cloneNode(true),
             data: null,
             config: {
-              width: "80vw",
-              position: "center",
-              backdrop: true,
+              width: getConfig(el, "width"),
+              position: getConfig(el, "position"),
+              backdrop: getConfig(el, "backdrop"),
+              blur: getConfig(el, "blur"),
+              animate: {
+                enter: getConfig(el, "animateEnter"),
+                leave: getConfig(el, "animateLeave"),
+              },
             },
             name: expression,
             props: {},
@@ -143,7 +148,6 @@ function addClass(el, _class = []) {
 function clickAway(el, callback) {
   const container = el.querySelector(".dialog-container");
   const clickHandler = (e) => {
-    console.log();
     if (!container.contains(e.target)) {
       callback();
     }
@@ -202,4 +206,16 @@ function getLastIndex() {
       0
     ) + 1
   );
+}
+
+function getConfig(el, name) {
+  let config = {
+    width: el.getAttribute(`width`) ?? "80vw",
+    position: el.getAttribute(`position`) ?? "center",
+    backdrop: el.getAttribute(`backdrop`) ?? true,
+    blur: el.getAttribute(`blur`) ?? 0,
+    animateEnter: el.getAttribute(`animate-enter`) ?? 0.2,
+    animateLeave: el.getAttribute(`animate-leave`) ?? 0.2,
+  };
+  return config[name];
 }

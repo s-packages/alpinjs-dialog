@@ -12,7 +12,15 @@
       <button @click="openDialog">Show Dialog</button>
       <span x-text="count"></span>
 
-      <template x-dialog="dialogName">
+      <template
+        x-dialog="dialogName"
+        width="1000px"
+        height="500px"
+        position="center"
+        blur="3"
+        animate-enter="0.5"
+        animate-leave="0.2"
+      >
         <div x-data="dialog" class="demo">
           <h1>Dialog Working!</h1>
           <p>Click Away to close</p>
@@ -35,9 +43,9 @@
             appendText() {
               const child = document.createElement("p");
               child.innerText = "Hello World";
-              this.$root.appendChild(child)
+              this.$root.appendChild(child);
             },
-            propsClick(){
+            propsClick() {
               this.$dialog("dialogName").props.click(1);
             },
             close() {
