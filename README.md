@@ -112,4 +112,17 @@ import :
 
     // props 
     this.$dialog("dialogName").props.click(1);
+
+    // static config
+    <template
+        x-dialog="dialogName"
+        width="1000px"
+        height="500px"
+        position="center"
+        blur="3"
+        animate-enter="0.5"
+        animate-leave="0.2"
+      >
+      ....
+    </template>
 ```
