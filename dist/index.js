@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import "./dist/style.css";
+import "./style.css";
 export default function(Alpine) {
   let dialogs = Alpine.reactive({});
   Alpine.directive(
