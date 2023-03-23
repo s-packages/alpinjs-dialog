@@ -62,7 +62,7 @@ import :
       config: {
         width: "500px", // dialog width
         height: "200px", // dialog height
-        position: "center", // center , left, right
+        position: "center", // center , left, right, top, bottom
         backdrop: true //set true click away to close
         blur: 13, //set true to blur overlay,
         animate: {

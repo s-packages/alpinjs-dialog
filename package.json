@@ -1,17 +1,15 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.51",
+  "version": "1.0.52",
   "description": "dialog for AlpineJS",
   "main": "dist/index.js",
-  "style": "*.css",
-  "type": "module",
+  "source": "index.js",
+  "module": "dist/module.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "nodemon tests/index.test.js",
-    "prod": "esbuild  index.js --outfile=dist/index.js",
-    "prod:watch": "esbuild  index.js --outfile=dist/index.js --watch"
+    "start": "parcel testing/index.html",
+    "dev": "parcel watch",
+    "build": "rm -r dist && parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "alpinjs-dialog",
@@ -32,10 +30,8 @@
     "gsap": "^3.11.3"
   },
   "devDependencies": {
-    "esbuild": "^0.15.5",
-    "nodemon": "^2.0.19",
-    "sass": "^1.56.1",
-    "vite": "^3.0.8"
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3"
   },
   "files": [
     "dist"

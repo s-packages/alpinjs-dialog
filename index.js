@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import "./dist/style.css";
+import "./dialog.scss";
 export default function (Alpine) {
   let dialogs = Alpine.reactive({});
   Alpine.directive(
@@ -29,6 +29,7 @@ export default function (Alpine) {
             data: null,
             config: {
               width: getConfig(el, "width"),
+              height: getConfig(el, "height"),
               position: getConfig(el, "position"),
               backdrop: getConfig(el, "backdrop"),
               blur: getConfig(el, "blur"),
@@ -119,22 +120,28 @@ function onDialogOpen(dialog) {
   container.style.width = dialog.config.width;
   container.style.height = dialog.config.height;
   document.body.appendChild(dialog.el);
-  animate(dialog?.config?.animate).enter(dialog.el, () => {
-    dialog.afterOpen(dialog);
-    dialog.el.dispatchEvent(EVENT.onReady(dialog));
-  });
+  animate(dialog.config.position, dialog?.config?.animate).enter(
+    dialog.el,
+    () => {
+      dialog.afterOpen(dialog);
+      dialog.el.dispatchEvent(EVENT.onReady(dialog));
+    }
+  );
 }
 
 function onDialogClose(dialog, data) {
   dialog.beforeClose(dialog);
 
-  animate().leave(dialog.el, () => {
-    dialog.show = false;
-    dialog.el.remove();
-    dialog.el = dialog.mainElement.cloneNode(true);
-    dialog.afterClose(data);
-    dialog.el.dispatchEvent(EVENT.onClose(dialog));
-  });
+  animate(dialog.config.position, dialog?.config?.animate).leave(
+    dialog.el,
+    () => {
+      dialog.show = false;
+      dialog.el.remove();
+      dialog.el = dialog.mainElement.cloneNode(true);
+      dialog.afterClose(data);
+      dialog.el.dispatchEvent(EVENT.onClose(dialog));
+    }
+  );
 }
 
 function addClass(el, _class = []) {
@@ -162,7 +169,36 @@ function overlayBlur(element, value = 0) {
   element.style.backdropFilter = `blur(${value}px)`;
 }
 
-function animate(option = {}) {
+function animate(position, option = {}) {
+  let typeFn = (type) => {
+    switch (type) {
+      case "right":
+        return {
+          from: { x: "100%" },
+          to: { x: "0%" },
+        };
+      case "left":
+        return {
+          from: { x: "-100%" },
+          to: { x: "0%" },
+        };
+      case "top":
+        return {
+          from: { y: "-100%" },
+          to: { y: "0%" },
+        };
+      case "bottom":
+        return {
+          from: { y: "100%" },
+          to: { y: "0%" },
+        };
+      default:
+        return {
+          from: { scale: 0.8 },
+          to: { scale: 1 },
+        };
+    }
+  };
   return {
     enter: (target, fn) => {
       gsap.to(target, {
@@ -172,8 +208,12 @@ function animate(option = {}) {
       gsap
         .fromTo(
           target.querySelector(".dialog-container"),
-          { scale: 0.8, autoAlpha: 0 },
-          { scale: 1, autoAlpha: 1, duration: option?.enter ?? 0.2 }
+          { ...typeFn(position).from, autoAlpha: 0 },
+          {
+            ...typeFn(position).to,
+            autoAlpha: 1,
+            duration: option?.enter ?? 0.2,
+          }
         )
         .eventCallback("onComplete", () => {
           fn ? fn(target) : null;
@@ -182,7 +222,7 @@ function animate(option = {}) {
     leave: (target, fn) => {
       gsap
         .to(target.querySelector(".dialog-container"), {
-          scale: 0.8,
+          ...typeFn(position).from,
           autoAlpha: 0,
           duration: option?.leave ?? 0.2,
         })
@@ -210,7 +250,8 @@ function getLastIndex() {
 
 function getConfig(el, name) {
   let config = {
-    width: el.getAttribute(`width`) ?? "80vw",
+    width: el.getAttribute(`width`),
+    height: el.getAttribute(`height`),
     position: el.getAttribute(`position`) ?? "center",
     backdrop: el.getAttribute(`backdrop`) ?? true,
     blur: el.getAttribute(`blur`) ?? 0,

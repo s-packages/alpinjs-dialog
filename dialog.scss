@@ -20,20 +20,52 @@
             justify-content: flex-end;
 
             .dialog-container {
-                height    : 100vh;
-                box-sizing: border-box;
+                height                    : 100vh;
+                box-sizing                : border-box;
+                border-top-right-radius   : unset;
+                border-bottom-right-radius: unset;
             }
         }
     }
 
     &[dialog-position=left] {
-        
+
         .dialog-wrapper {
             justify-content: flex-start;
 
             .dialog-container {
-                height    : 100vh;
-                box-sizing: border-box;
+                height                   : 100vh;
+                box-sizing               : border-box;
+                border-top-left-radius   : unset;
+                border-bottom-left-radius: unset;
+            }
+        }
+    }
+
+    &[dialog-position=top] {
+        .dialog-wrapper {
+            height     : 100vh;
+            align-items: flex-start;
+
+            .dialog-container {
+                width                  : 100vw;
+                box-sizing             : border-box;
+                border-top-left-radius : unset;
+                border-top-right-radius: unset;
+            }
+        }
+    }
+
+    &[dialog-position=bottom] {
+        .dialog-wrapper {
+            height     : 100vh;
+            align-items: flex-end;
+
+            .dialog-container {
+                width                     : 100vw;
+                box-sizing                : border-box;
+                border-bottom-left-radius : unset;
+                border-bottom-right-radius: unset;
             }
         }
     }
