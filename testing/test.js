@@ -1,6 +1,12 @@
 import Alpine from "alpinejs";
 import dialog from "../index";
-Alpine.plugin(dialog);
+//global config
+dialog(Alpine, {
+  animate: {
+    enter: 0.3,
+    leave: 0.2,
+  },
+});
 window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
