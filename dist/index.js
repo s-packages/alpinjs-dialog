@@ -88,7 +88,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 close (data) {
                     onDialogClose(dialog, data);
                 },
-                data () {
+                get data () {
                     return dialog?.data;
                 },
                 props: dialog?.props
@@ -143,12 +143,15 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
     function clickAway(el, callback) {
         const container = el.querySelector(".dialog-container");
         const clickHandler = (e)=>{
-            if (!container.contains(e.target)) callback();
+            if (!matchParent(container, e.target)) callback();
         };
         el.addEventListener("click", clickHandler);
         return ()=>{
             el.removeEventListener("click", clickHandler);
         };
+    }
+    function matchParent(parent, target) {
+        return parent === target || parent.contains(target);
     }
     function overlayBlur(element, value = 0) {
         element.style.backdropFilter = `blur(${value}px)`;
@@ -243,7 +246,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
             width: el.getAttribute(`width`) ?? globalConfig?.width,
             height: el.getAttribute(`height`) ?? globalConfig?.height,
             position: el.getAttribute(`position`) ?? globalConfig?.position ?? "center",
-            backdrop: el.getAttribute(`backdrop`) ?? globalConfig?.backdrop ?? true,
+            backdrop: (el.getAttribute(`backdrop`) != "false") ?? globalConfig?.backdrop ?? true,
             blur: el.getAttribute(`blur`) ?? globalConfig?.blur ?? 0,
             animateEnter: el.getAttribute(`animate-enter`) ?? globalConfig?.animate?.enter ?? 0.2,
             animateLeave: el.getAttribute(`animate-leave`) ?? globalConfig?.animate?.leave ?? 0.2

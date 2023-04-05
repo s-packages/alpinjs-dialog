@@ -12,7 +12,7 @@
       <button @click="openDialog">Show Dialog</button>
       <span x-text="count"></span>
 
-      <template x-dialog="dialogName" position="right">
+      <template x-dialog="dialogName" position="right" backdrop="true">
         <div x-data="dialog" class="demo">
           <h1>Dialog Working!</h1>
           <p>Click Away to close</p>
@@ -30,7 +30,7 @@
                   console.log("dialogReady", e.detail);
                 }
               );
-              console.log("dialog init", this.$dialog("dialogName").data());
+              console.log("dialog init", this.$dialog("dialogName").data);
             },
             appendText() {
               const child = document.createElement("p");

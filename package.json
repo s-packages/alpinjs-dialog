@@ -1,6 +1,6 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.53",
+  "version": "1.0.55",
   "description": "dialog for AlpineJS",
   "main": "dist/index.js",
   "source": "index.js",
@@ -25,12 +25,11 @@
   ],
   "author": "LY SARI",
   "license": "ISC",
-  "dependencies": {
-    "alpinejs": "^3.10.5",
-    "gsap": "^3.11.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",
+    "alpinejs": "^3.12.0",
+    "gsap": "^3.11.5",
     "parcel": "^2.8.3"
   },
   "files": [

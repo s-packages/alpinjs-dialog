@@ -87,7 +87,10 @@ import :
       }
     });
 
-    // get data from dialog
+    // get data from dialog v1.0.54 or higher
+    let data = this.$dialog("dialogName").data;
+
+    // get data from dialog v1.0.53 or lower
     let data = this.$dialog("dialogName").data();
 
     // close dialog
