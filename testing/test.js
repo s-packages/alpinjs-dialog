@@ -22,6 +22,21 @@ Alpine.data("demo", () => ({
     });
   },
   openDialog() {
+    // this.$dialog("dialogName01").open({
+    //   addClass: ["custom-class-1", "custom-class-2"], //class as array
+    //   props: {
+    //     click: this.counter.bind(this),
+    //   },
+    //   afterOpen: (dialog) => {
+    //     console.log("after dialog opened", dialog);
+    //   },
+    //   beforeClose: (dialog) => {
+    //     console.log("before dialog close", dialog);
+    //   },
+    //   afterClose: (dialog) => {
+    //     console.log("after dialog closed", dialog);
+    //   },
+    // });
     this.$dialog("dialogName").open({
       addClass: ["custom-class-1", "custom-class-2"], //class as array
       data: {

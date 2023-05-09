@@ -1,6 +1,12 @@
 import gsap from "gsap";
 import "./dialog.scss";
 export default function (Alpine, globalConfig) {
+  const CLASSLIST = {
+    MAIN: "alpinjs-dialog",
+    CONTAINER: "alpinjs-dialog-container",
+    WRAPPER: "alpinjs-dialog-wrapper",
+    OVERLAY: "alpinjs-dialog-overlay",
+  };
   let dialogs = Alpine.reactive({});
   Alpine.directive(
     "dialog",
@@ -10,15 +16,15 @@ export default function (Alpine, globalConfig) {
         let clone = el.content.cloneNode(true);
 
         let container = document.createElement("div");
-        container.classList.add("dialog-container");
+        container.classList.add(CLASSLIST.CONTAINER);
         container.appendChild(clone);
 
         let content = document.createElement("div");
-        content.classList.add("dialog-wrapper");
+        content.classList.add(CLASSLIST.WRAPPER);
         content.appendChild(container);
 
         let main = document.createElement("div");
-        main.classList.add("dialog");
+        main.classList.add(CLASSLIST.MAIN);
         main.appendChild(content);
 
         if (!dialog) {
@@ -27,6 +33,8 @@ export default function (Alpine, globalConfig) {
             mainElement: main,
             el: main.cloneNode(true),
             data: null,
+            addClass: getConfig(el, "addClass"),
+            addOverlayClass: getConfig(el, "addOverlayClass"),
             config: {
               width: getConfig(el, "width"),
               height: getConfig(el, "height"),
@@ -77,7 +85,8 @@ export default function (Alpine, globalConfig) {
           ...config.config,
         };
         dialog.data = config.data ?? null;
-        dialog["addClass"] = config.addClass ?? null;
+        dialog["addClass"] = config.addClass ?? dialog.addClass;
+        dialog["addOverlayClass"] = config.addOverlayClass ?? dialog.addOverlayClass;
         dialog["props"] = config.props ?? {};
         dialog.show = true;
         onDialogOpen(dialog);
@@ -110,16 +119,21 @@ export default function (Alpine, globalConfig) {
     clickAway(dialog.el, () => {
       if (dialog.config.backdrop) onDialogClose(dialog);
     });
+    const overlay = document.createElement("div");
+    overlay.classList.add(CLASSLIST.OVERLAY, ...dialog?.addOverlayClass);
+    overlay.style.zIndex = getLastIndex();
+    overlay.setAttribute("dialog-name", dialog.name);
+    document.body.appendChild(overlay);
     addClass(dialog.el, dialog?.addClass);
     overlayBlur(dialog.el, dialog?.config?.blur);
     dialog.el.setAttribute("x-dialog:show", dialog.name);
     dialog.el.setAttribute("dialog-position", dialog.config.position);
     dialog.el.style.zIndex = getLastIndex();
-    const container = dialog.el.querySelector(".dialog-container");
+    const container = dialog.el.querySelector(`.${CLASSLIST.CONTAINER}`);
     container.style.width = dialog.config.width;
     container.style.height = dialog.config.height;
     document.body.appendChild(dialog.el);
-    animate(dialog.config.position, dialog?.config?.animate).enter(
+    animate(dialog.config.position, dialog?.config?.animate, dialog).enter(
       dialog.el,
       () => {
         dialog.afterOpen(dialog);
@@ -130,11 +144,14 @@ export default function (Alpine, globalConfig) {
 
   function onDialogClose(dialog, data) {
     dialog.beforeClose(dialog);
-
-    animate(dialog.config.position, dialog?.config?.animate).leave(
+    const overlay = document.querySelector(
+      `.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`
+    );
+    animate(dialog.config.position, dialog?.config?.animate, dialog).leave(
       dialog.el,
       () => {
         dialog.show = false;
+        overlay.remove();
         dialog.el.remove();
         dialog.el = dialog.mainElement.cloneNode(true);
         dialog.afterClose(data);
@@ -152,7 +169,7 @@ export default function (Alpine, globalConfig) {
   }
 
   function clickAway(el, callback) {
-    const container = el.querySelector(".dialog-container");
+    const container = el.querySelector(`.${CLASSLIST.CONTAINER}`);
     const clickHandler = (e) => {
       if (!matchParent(container, e.target)) {
         callback();
@@ -172,49 +189,56 @@ export default function (Alpine, globalConfig) {
     element.style.backdropFilter = `blur(${value}px)`;
   }
 
-  function animate(position, option = {}) {
+  function animate(position, option = {}, dialog) {
+    const overlay = document.querySelector(
+      `.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`
+    );
     let typeFn = (type) => {
+      const { clientWidth, clientHeight } = dialog.el.querySelector(
+        `.${CLASSLIST.CONTAINER}`
+      );
+      const width = `${clientWidth}px`;
+      const height = `${clientHeight}px`;
       switch (type) {
         case "right":
           return {
-            from: { x: "100%" },
+            from: { x: width },
             to: { x: "0%" },
           };
         case "left":
           return {
-            from: { x: "-100%" },
+            from: { x: `-${width}` },
             to: { x: "0%" },
           };
         case "top":
           return {
-            from: { y: "-100%" },
+            from: { y: `-${height}` },
             to: { y: "0%" },
           };
         case "bottom":
           return {
-            from: { y: "100%" },
+            from: { y: height },
             to: { y: "0%" },
           };
         default:
           return {
-            from: { scale: 0.8 },
-            to: { scale: 1 },
+            from: { scale: 0.8, autoAlpha: 0 },
+            to: { scale: 1, autoAlpha: 1 },
           };
       }
     };
     return {
       enter: (target, fn) => {
-        gsap.to(target, {
+        gsap.to(overlay, {
           autoAlpha: 1,
           duration: option?.enter ?? 0.2,
         });
         gsap
           .fromTo(
-            target.querySelector(".dialog-container"),
-            { ...typeFn(position).from, autoAlpha: 0 },
+            target.querySelector(`.${CLASSLIST.CONTAINER}`),
+            { ...typeFn(position).from },
             {
               ...typeFn(position).to,
-              autoAlpha: 1,
               duration: option?.enter ?? 0.2,
             }
           )
@@ -224,15 +248,14 @@ export default function (Alpine, globalConfig) {
       },
       leave: (target, fn) => {
         gsap
-          .to(target.querySelector(".dialog-container"), {
+          .to(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
             ...typeFn(position).from,
-            autoAlpha: 0,
             duration: option?.leave ?? 0.2,
           })
           .eventCallback("onComplete", () => {
             fn ? fn(target) : null;
           });
-        gsap.to(target, {
+        gsap.to(overlay, {
           autoAlpha: 0,
           duration: option?.leave ?? 0.2,
         });
@@ -257,12 +280,23 @@ export default function (Alpine, globalConfig) {
       height: el.getAttribute(`height`) ?? globalConfig?.height,
       position:
         el.getAttribute(`position`) ?? globalConfig?.position ?? "center",
-      backdrop: el.getAttribute(`backdrop`) != 'false' ?? globalConfig?.backdrop ?? true,
+      backdrop:
+        el.getAttribute(`backdrop`) != "false" ??
+        globalConfig?.backdrop ??
+        true,
       blur: el.getAttribute(`blur`) ?? globalConfig?.blur ?? 0,
       animateEnter:
         el.getAttribute(`animate-enter`) ?? globalConfig?.animate?.enter ?? 0.2,
       animateLeave:
         el.getAttribute(`animate-leave`) ?? globalConfig?.animate?.leave ?? 0.2,
+      addClass:
+        el.getAttribute(`add-class`)?.split(" ") ??
+        globalConfig?.addClass ??
+        [],
+      addOverlayClass:
+        el.getAttribute(`add-overlay-class`)?.split(" ") ??
+        globalConfig?.addOverlayClass ??
+        [],
     };
     return config[name];
   }

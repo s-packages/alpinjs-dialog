@@ -1,76 +1,81 @@
-.dialog {
+.alpinjs-dialog-overlay {
     position             : fixed;
     top                  : 0;
     left                 : 0;
     bottom               : 0;
     right                : 0;
     background           : rgba($color: #000000, $alpha: .3);
-    display              : flex;
-    align-items          : center;
-    justify-content      : center;
     box-shadow           : 0 10px 15px rgba($color: #000000, $alpha: .1);
-    box-sizing           : border-box;
     background-blend-mode: overlay;
-    overflow             : hidden;
     opacity              : 0;
+}
+
+.alpinjs-dialog {
+    position       : fixed;
+    top            : 0;
+    left           : 0;
+    bottom         : 0;
+    right          : 0;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    box-sizing     : border-box;
+    overflow       : hidden;
+
 
     &[dialog-position=right] {
 
-        .dialog-wrapper {
+        .alpinjs-dialog-wrapper {
             justify-content: flex-end;
 
-            .dialog-container {
-                height                    : 100vh;
-                box-sizing                : border-box;
-                border-top-right-radius   : unset;
-                border-bottom-right-radius: unset;
+            .alpinjs-dialog-container {
+                height       : 100vh;
+                box-sizing   : border-box;
+                border-radius: unset;
             }
         }
     }
 
     &[dialog-position=left] {
 
-        .dialog-wrapper {
+        .alpinjs-dialog-wrapper {
             justify-content: flex-start;
 
-            .dialog-container {
-                height                   : 100vh;
-                box-sizing               : border-box;
-                border-top-left-radius   : unset;
-                border-bottom-left-radius: unset;
+            .alpinjs-dialog-container {
+                height       : 100vh;
+                box-sizing   : border-box;
+                border-radius: unset;
             }
         }
     }
 
     &[dialog-position=top] {
-        .dialog-wrapper {
+        .alpinjs-dialog-wrapper {
             height     : 100vh;
             align-items: flex-start;
 
-            .dialog-container {
-                width                  : 100vw;
-                box-sizing             : border-box;
-                border-top-left-radius : unset;
-                border-top-right-radius: unset;
+            .alpinjs-dialog-container {
+                width        : 100vw;
+                box-sizing   : border-box;
+                border-radius: unset;
             }
         }
     }
 
     &[dialog-position=bottom] {
-        .dialog-wrapper {
+        .alpinjs-dialog-wrapper {
             height     : 100vh;
             align-items: flex-end;
 
-            .dialog-container {
-                width                     : 100vw;
-                box-sizing                : border-box;
-                border-bottom-left-radius : unset;
-                border-bottom-right-radius: unset;
+            .alpinjs-dialog-container {
+                width        : 100vw;
+                box-sizing   : border-box;
+                border-radius: unset;
             }
         }
     }
 
-    .dialog-wrapper {
+    .alpinjs-dialog-wrapper {
         width          : 100%;
         max-height     : 100%;
         padding        : 10px 0;
@@ -79,12 +84,11 @@
         justify-content: center;
     }
 
-    .dialog-container {
+    .alpinjs-dialog-container {
         background   : #fff;
         width        : fit-content;
         height       : fit-content;
         padding      : 25px;
         border-radius: 8px;
-
     }
 }
