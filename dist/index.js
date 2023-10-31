@@ -57,6 +57,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 },
                 name: expression,
                 props: {},
+                validClose: undefined,
                 afterOpen: ()=>{},
                 beforeClose: ()=>{},
                 afterClose: ()=>{}
@@ -100,7 +101,12 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 get data () {
                     return dialog?.data;
                 },
-                props: dialog?.props
+                props: dialog?.props,
+                /**
+       * @param {Function} fn
+       */ validClose (fn) {
+                    fn && (dialog.validClose = fn);
+                }
             };
         });
     //bind event to dialog
@@ -141,6 +147,8 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
     }
     function onDialogClose(dialog, data) {
         dialog.beforeClose(dialog);
+        if (dialog.validClose && typeof dialog.validClose !== "function") return;
+        if (!dialog.validClose()) return;
         const overlay = document.querySelector(`.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`);
         animate(dialog.config.position, dialog?.config?.animate, dialog).leave(dialog.el, ()=>{
             dialog.show = false;

@@ -96,6 +96,12 @@ import :
     // close dialog
     this.$dialog("dialogName").close(/* return something after close here */);
 
+    // close dialog with validation
+    this.$dialog("dialogName").validClose(() => {
+      // return true to close dialog
+      return true;
+    });
+
     //event listener
     this.$dialog("dialogName")
       .target
@@ -113,7 +119,7 @@ import :
         }
       );
 
-    // props 
+    // props
     this.$dialog("dialogName").props.click(1);
 
     // static config

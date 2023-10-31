@@ -48,6 +48,7 @@ export default function (Alpine, globalConfig) {
             },
             name: expression,
             props: {},
+            validClose: undefined,
             afterOpen: () => {},
             beforeClose: () => {},
             afterClose: () => {},
@@ -86,7 +87,8 @@ export default function (Alpine, globalConfig) {
         };
         dialog.data = config.data ?? null;
         dialog["addClass"] = config.addClass ?? dialog.addClass;
-        dialog["addOverlayClass"] = config.addOverlayClass ?? dialog.addOverlayClass;
+        dialog["addOverlayClass"] =
+          config.addOverlayClass ?? dialog.addOverlayClass;
         dialog["props"] = config.props ?? {};
         dialog.show = true;
         onDialogOpen(dialog);
@@ -98,6 +100,12 @@ export default function (Alpine, globalConfig) {
         return dialog?.data;
       },
       props: dialog?.props,
+      /**
+       * @param {Function} fn
+       */
+      validClose(fn) {
+        fn && (dialog.validClose = fn);
+      },
     };
   });
 
@@ -117,7 +125,9 @@ export default function (Alpine, globalConfig) {
 
   function onDialogOpen(dialog) {
     clickAway(dialog.el, () => {
-      if (dialog.config.backdrop) onDialogClose(dialog);
+      if (dialog.config.backdrop) {
+        onDialogClose(dialog);
+      }
     });
     const overlay = document.createElement("div");
     overlay.classList.add(CLASSLIST.OVERLAY, ...dialog?.addOverlayClass);
@@ -144,6 +154,8 @@ export default function (Alpine, globalConfig) {
 
   function onDialogClose(dialog, data) {
     dialog.beforeClose(dialog);
+    if (dialog.validClose && typeof dialog.validClose !== "function") return;
+    if (!dialog.validClose()) return;
     const overlay = document.querySelector(
       `.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`
     );

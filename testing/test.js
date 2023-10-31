@@ -18,7 +18,6 @@ Alpine.data("demo", () => ({
         // dialog is closed
         console.log("dialogClose", e.detail);
       });
-      this.openDialog();
     });
   },
   openDialog() {
