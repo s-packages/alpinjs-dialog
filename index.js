@@ -154,8 +154,9 @@ export default function (Alpine, globalConfig) {
 
   function onDialogClose(dialog, data) {
     dialog.beforeClose(dialog);
-    if (dialog.validClose && typeof dialog.validClose !== "function") return;
-    if (!dialog.validClose()) return;
+    if (typeof dialog?.validClose === "function") {
+      if (!dialog.validClose()) return;
+    }
     const overlay = document.querySelector(
       `.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`
     );
