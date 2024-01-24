@@ -1,22 +1,25 @@
 require("./index.css");
-var $c5L0i$gsap = require("gsap");
+var $5tz1k$gsap = require("gsap");
+
 
 function $parcel$interopDefault(a) {
   return a && a.__esModule ? a.default : a;
 }
+
 function $parcel$defineInteropFlag(a) {
   Object.defineProperty(a, '__esModule', {value: true, configurable: true});
 }
+
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
 
 $parcel$defineInteropFlag(module.exports);
 
-$parcel$export(module.exports, "default", () => $43d7963e56408b24$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "default", () => $e069f2443758ee3f$export$2e2bcd8739ae039);
 
 
-function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
+function $e069f2443758ee3f$export$2e2bcd8739ae039(Alpine, globalConfig) {
     const CLASSLIST = {
         MAIN: "alpinjs-dialog",
         CONTAINER: "alpinjs-dialog-container",
@@ -24,7 +27,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         OVERLAY: "alpinjs-dialog-overlay"
     };
     let dialogs = Alpine.reactive({});
-    Alpine.directive("dialog", (el, { expression: expression , value: value , modifiers: modifiers  }, { effect: effect , evaluateLater: evaluateLater  })=>{
+    Alpine.directive("dialog", (el, { expression: expression, value: value, modifiers: modifiers }, { effect: effect, evaluateLater: evaluateLater })=>{
         if (!value) {
             let dialog = dialogs[expression];
             let clone = el.content.cloneNode(true);
@@ -147,8 +150,9 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
     }
     function onDialogClose(dialog, data) {
         dialog.beforeClose(dialog);
-        if (dialog.validClose && typeof dialog.validClose !== "function") return;
-        if (!dialog.validClose()) return;
+        if (typeof dialog?.validClose === "function") {
+            if (!dialog.validClose()) return;
+        }
         const overlay = document.querySelector(`.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`);
         animate(dialog.config.position, dialog?.config?.animate, dialog).leave(dialog.el, ()=>{
             dialog.show = false;
@@ -183,7 +187,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
     function animate(position, option = {}, dialog) {
         const overlay = document.querySelector(`.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`);
         let typeFn = (type)=>{
-            const { clientWidth: clientWidth , clientHeight: clientHeight  } = dialog.el.querySelector(`.${CLASSLIST.CONTAINER}`);
+            const { clientWidth: clientWidth, clientHeight: clientHeight } = dialog.el.querySelector(`.${CLASSLIST.CONTAINER}`);
             const width = `${clientWidth}px`;
             const height = `${clientHeight}px`;
             switch(type){
@@ -238,11 +242,11 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         };
         return {
             enter: (target, fn)=>{
-                (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
+                (0, ($parcel$interopDefault($5tz1k$gsap))).to(overlay, {
                     autoAlpha: 1,
                     duration: option?.enter ?? 0.2
                 });
-                (0, ($parcel$interopDefault($c5L0i$gsap))).fromTo(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
+                (0, ($parcel$interopDefault($5tz1k$gsap))).fromTo(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
                     ...typeFn(position).from
                 }, {
                     ...typeFn(position).to,
@@ -252,13 +256,13 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 });
             },
             leave: (target, fn)=>{
-                (0, ($parcel$interopDefault($c5L0i$gsap))).to(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
+                (0, ($parcel$interopDefault($5tz1k$gsap))).to(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
                     ...typeFn(position).from,
                     duration: option?.leave ?? 0.2
                 }).eventCallback("onComplete", ()=>{
                     fn && fn(target);
                 });
-                (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
+                (0, ($parcel$interopDefault($5tz1k$gsap))).to(overlay, {
                     autoAlpha: 0,
                     duration: option?.leave ?? 0.2
                 });
