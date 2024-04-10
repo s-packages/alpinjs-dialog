@@ -1,12 +1,13 @@
 import Alpine from "alpinejs";
 import dialog from "../index";
+Alpine.plugin(dialog);
 //global config
-dialog(Alpine, {
-  animate: {
-    enter: 0.3,
-    leave: 0.2,
-  },
-});
+// dialog(Alpine, {
+//   animate: {
+//     enter: 0.3,
+//     leave: 0.2,
+//   },
+// });
 window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
@@ -41,17 +42,17 @@ Alpine.data("demo", () => ({
       data: {
         show: true,
       }, // pass data into dialog
-      // config: {
-      //   width: "700px",
-      //   height: "100vh",
-      //   position: "right", // center , left, right
-      //   backdrop: true, //set true click away to close
-      //   blur: 0, //set true to blur overlay,
-      //   animate: {
-      //     enter: 0.2, // seconds
-      //     leave: 0.2, // seconds
-      //   },
-      // },
+      config: {
+        width: "700px",
+        height: "200vh",
+        position: "center", // center , left, right
+        backdrop: true, //set true click away to close
+        blur: 0, //set true to blur overlay,
+        animate: {
+          enter: 0.2, // seconds
+          leave: 0.2, // seconds
+        },
+      },
       props: {
         click: this.counter.bind(this),
       },

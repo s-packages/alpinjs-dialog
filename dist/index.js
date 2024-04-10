@@ -1,5 +1,5 @@
 require("./index.css");
-var $5tz1k$gsap = require("gsap");
+var $c5L0i$gsap = require("gsap");
 
 
 function $parcel$interopDefault(a) {
@@ -16,10 +16,10 @@ function $parcel$export(e, n, v, s) {
 
 $parcel$defineInteropFlag(module.exports);
 
-$parcel$export(module.exports, "default", () => $e069f2443758ee3f$export$2e2bcd8739ae039);
+$parcel$export(module.exports, "default", () => $43d7963e56408b24$export$2e2bcd8739ae039);
 
 
-function $e069f2443758ee3f$export$2e2bcd8739ae039(Alpine, globalConfig) {
+function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
     const CLASSLIST = {
         MAIN: "alpinjs-dialog",
         CONTAINER: "alpinjs-dialog-container",
@@ -188,49 +188,61 @@ function $e069f2443758ee3f$export$2e2bcd8739ae039(Alpine, globalConfig) {
         const overlay = document.querySelector(`.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`);
         let typeFn = (type)=>{
             const { clientWidth: clientWidth, clientHeight: clientHeight } = dialog.el.querySelector(`.${CLASSLIST.CONTAINER}`);
+            const fromHorizontal = `100px`;
+            const fromVertical = `50px`;
             const width = `${clientWidth}px`;
             const height = `${clientHeight}px`;
+            const scale = Math.max((Math.max(clientWidth, clientHeight) - 50) * 100 / Math.max(clientWidth, clientHeight) / 100, 0.8);
+            console.log(scale);
             switch(type){
                 case "right":
                     return {
                         from: {
-                            x: width
+                            x: fromHorizontal,
+                            autoAlpha: 0
                         },
                         to: {
-                            x: "0%"
+                            x: "0%",
+                            autoAlpha: 1
                         }
                     };
                 case "left":
                     return {
                         from: {
-                            x: `-${width}`
+                            x: -fromHorizontal,
+                            autoAlpha: 0
                         },
                         to: {
-                            x: "0%"
+                            x: "0%",
+                            autoAlpha: 1
                         }
                     };
                 case "top":
                     return {
                         from: {
-                            y: `-${height}`
+                            y: -fromVertical,
+                            autoAlpha: 0
                         },
                         to: {
-                            y: "0%"
+                            y: "0%",
+                            autoAlpha: 1
                         }
                     };
                 case "bottom":
                     return {
                         from: {
-                            y: height
+                            y: fromVertical,
+                            autoAlpha: 0
                         },
                         to: {
-                            y: "0%"
+                            y: "0%",
+                            autoAlpha: 1
                         }
                     };
                 default:
                     return {
                         from: {
-                            scale: 0.8,
+                            scale: scale,
                             autoAlpha: 0
                         },
                         to: {
@@ -242,11 +254,11 @@ function $e069f2443758ee3f$export$2e2bcd8739ae039(Alpine, globalConfig) {
         };
         return {
             enter: (target, fn)=>{
-                (0, ($parcel$interopDefault($5tz1k$gsap))).to(overlay, {
+                (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
                     autoAlpha: 1,
                     duration: option?.enter ?? 0.2
                 });
-                (0, ($parcel$interopDefault($5tz1k$gsap))).fromTo(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
+                (0, ($parcel$interopDefault($c5L0i$gsap))).fromTo(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
                     ...typeFn(position).from
                 }, {
                     ...typeFn(position).to,
@@ -256,13 +268,13 @@ function $e069f2443758ee3f$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 });
             },
             leave: (target, fn)=>{
-                (0, ($parcel$interopDefault($5tz1k$gsap))).to(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
+                (0, ($parcel$interopDefault($c5L0i$gsap))).to(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
                     ...typeFn(position).from,
                     duration: option?.leave ?? 0.2
                 }).eventCallback("onComplete", ()=>{
                     fn && fn(target);
                 });
-                (0, ($parcel$interopDefault($5tz1k$gsap))).to(overlay, {
+                (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
                     autoAlpha: 0,
                     duration: option?.leave ?? 0.2
                 });

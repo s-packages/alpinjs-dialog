@@ -1,6 +1,6 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.72",
+  "version": "1.0.73",
   "description": "dialog for AlpineJS",
   "main": "dist/index.js",
   "source": "index.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "start": "parcel testing/index.html",
     "dev": "parcel watch",
-    "build": "rm -r dist && parcel build",
+    "build": "parcel build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -26,7 +26,8 @@
   "author": "LY SARI",
   "license": "ISC",
   "dependencies": {
-    "gsap": "^3.12.2"
+    "gsap": "^3.12.2",
+    "parcel-bundler": "^1.12.5"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",

@@ -210,32 +210,41 @@ export default function (Alpine, globalConfig) {
       const { clientWidth, clientHeight } = dialog.el.querySelector(
         `.${CLASSLIST.CONTAINER}`
       );
+      const fromHorizontal = `100px`;
+      const fromVertical = `50px`;
       const width = `${clientWidth}px`;
       const height = `${clientHeight}px`;
+      const scale = Math.max(
+        ((Math.max(clientWidth, clientHeight) - 50) * 100) /
+          Math.max(clientWidth, clientHeight) /
+          100,
+        0.8
+      );
+      console.log(scale);
       switch (type) {
         case "right":
           return {
-            from: { x: width },
-            to: { x: "0%" },
+            from: { x: fromHorizontal, autoAlpha: 0 },
+            to: { x: "0%", autoAlpha: 1 },
           };
         case "left":
           return {
-            from: { x: `-${width}` },
-            to: { x: "0%" },
+            from: { x: -fromHorizontal, autoAlpha: 0 },
+            to: { x: "0%", autoAlpha: 1 },
           };
         case "top":
           return {
-            from: { y: `-${height}` },
-            to: { y: "0%" },
+            from: { y: -fromVertical, autoAlpha: 0 },
+            to: { y: "0%", autoAlpha: 1 },
           };
         case "bottom":
           return {
-            from: { y: height },
-            to: { y: "0%" },
+            from: { y: fromVertical, autoAlpha: 0 },
+            to: { y: "0%", autoAlpha: 1 },
           };
         default:
           return {
-            from: { scale: 0.8, autoAlpha: 0 },
+            from: { scale: scale, autoAlpha: 0 },
             to: { scale: 1, autoAlpha: 1 },
           };
       }

@@ -19,7 +19,7 @@
           <p>Click Away to close</p>
         </div>
       </template> -->
-    <template x-dialog="dialogName" position="center" backdrop="true">
+    <template x-dialog="dialogName">
       <div x-data="dialog" class="demo">
         <h1>Dialog Working!</h1>
         <p>Click Away to close</p>
@@ -37,7 +37,7 @@
           canClose: false,
           formInput: null,
           init() {
-            this.$dialog("dialogName").validClose(() => this.canClose || this.formInput === "close");
+            // this.$dialog("dialogName").validClose(() => this.canClose || this.formInput === "close");
             this.$dialog("dialogName").target.addEventListener(
               "dialogReady",
               (e) => {
