@@ -35,6 +35,7 @@ export default function (Alpine, globalConfig) {
             data: null,
             addClass: getConfig(el, "addClass"),
             addOverlayClass: getConfig(el, "addOverlayClass"),
+            drawer: null,
             config: {
               width: getConfig(el, "width"),
               height: getConfig(el, "height"),
@@ -91,6 +92,7 @@ export default function (Alpine, globalConfig) {
           config.addOverlayClass ?? dialog.addOverlayClass;
         dialog["props"] = config.props ?? {};
         dialog.show = true;
+        dialog.drawer = config.drawer;
         onDialogOpen(dialog);
       },
       close(data) {
@@ -203,6 +205,7 @@ export default function (Alpine, globalConfig) {
   }
 
   function animate(position, option = {}, dialog) {
+    const { drawer } = dialog;
     const overlay = document.querySelector(
       `.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`
     );
@@ -210,17 +213,16 @@ export default function (Alpine, globalConfig) {
       const { clientWidth, clientHeight } = dialog.el.querySelector(
         `.${CLASSLIST.CONTAINER}`
       );
-      const fromHorizontal = `100px`;
-      const fromVertical = `50px`;
-      const width = `${clientWidth}px`;
-      const height = `${clientHeight}px`;
+      const fromHorizontal = 100;
+      const fromVertical = 50;
+      // const width = `${clientWidth}px`;
+      // const height = `${clientHeight}px`;
       const scale = Math.max(
         ((Math.max(clientWidth, clientHeight) - 50) * 100) /
           Math.max(clientWidth, clientHeight) /
           100,
         0.8
       );
-      console.log(scale);
       switch (type) {
         case "right":
           return {
@@ -249,12 +251,26 @@ export default function (Alpine, globalConfig) {
           };
       }
     };
+    const drawerTarget = document.querySelector(drawer);
+    const drawerScale = Math.max(
+      ((Math.max(drawerTarget?.clientWidth, drawerTarget?.clientHeight) - 50) *
+        100) /
+        Math.max(drawerTarget?.clientWidth, drawerTarget?.clientHeight) /
+        100,
+      0.8
+    );
     return {
       enter: (target, fn) => {
         gsap.to(overlay, {
           autoAlpha: 1,
           duration: option?.enter ?? 0.2,
         });
+        if (drawerTarget) {
+          gsap.to(drawerTarget, {
+            scale: drawerScale,
+            duration: option?.enter ?? 0.2,
+          });
+        }
         gsap
           .fromTo(
             target.querySelector(`.${CLASSLIST.CONTAINER}`),
@@ -277,6 +293,12 @@ export default function (Alpine, globalConfig) {
           .eventCallback("onComplete", () => {
             fn ? fn(target) : null;
           });
+        if (drawerTarget) {
+          gsap.to(drawerTarget, {
+            scale: 1,
+            duration: option?.leave ?? 0.2,
+          });
+        }
         gsap.to(overlay, {
           autoAlpha: 0,
           duration: option?.leave ?? 0.2,

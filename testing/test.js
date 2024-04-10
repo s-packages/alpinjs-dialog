@@ -44,8 +44,8 @@ Alpine.data("demo", () => ({
       }, // pass data into dialog
       config: {
         width: "700px",
-        height: "200vh",
-        position: "center", // center , left, right
+        // height: "200vh",
+        position: "bottom", // center , left, right
         backdrop: true, //set true click away to close
         blur: 0, //set true to blur overlay,
         animate: {
@@ -53,6 +53,7 @@ Alpine.data("demo", () => ({
           leave: 0.2, // seconds
         },
       },
+      // drawer:'.drawer',
       props: {
         click: this.counter.bind(this),
       },

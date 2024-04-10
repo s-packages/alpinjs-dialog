@@ -47,6 +47,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 data: null,
                 addClass: getConfig(el, "addClass"),
                 addOverlayClass: getConfig(el, "addOverlayClass"),
+                drawer: null,
                 config: {
                     width: getConfig(el, "width"),
                     height: getConfig(el, "height"),
@@ -96,6 +97,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                     dialog["addOverlayClass"] = config.addOverlayClass ?? dialog.addOverlayClass;
                     dialog["props"] = config.props ?? {};
                     dialog.show = true;
+                    dialog.drawer = config.drawer;
                     onDialogOpen(dialog);
                 },
                 close (data) {
@@ -185,15 +187,15 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         element.style.backdropFilter = `blur(${value}px)`;
     }
     function animate(position, option = {}, dialog) {
+        const { drawer: drawer } = dialog;
         const overlay = document.querySelector(`.${CLASSLIST.OVERLAY}[dialog-name=${dialog.name}]`);
         let typeFn = (type)=>{
             const { clientWidth: clientWidth, clientHeight: clientHeight } = dialog.el.querySelector(`.${CLASSLIST.CONTAINER}`);
-            const fromHorizontal = `100px`;
-            const fromVertical = `50px`;
-            const width = `${clientWidth}px`;
-            const height = `${clientHeight}px`;
+            const fromHorizontal = 100;
+            const fromVertical = 50;
+            // const width = `${clientWidth}px`;
+            // const height = `${clientHeight}px`;
             const scale = Math.max((Math.max(clientWidth, clientHeight) - 50) * 100 / Math.max(clientWidth, clientHeight) / 100, 0.8);
-            console.log(scale);
             switch(type){
                 case "right":
                     return {
@@ -252,10 +254,16 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                     };
             }
         };
+        const drawerTarget = document.querySelector(drawer);
+        const drawerScale = Math.max((Math.max(drawerTarget?.clientWidth, drawerTarget?.clientHeight) - 50) * 100 / Math.max(drawerTarget?.clientWidth, drawerTarget?.clientHeight) / 100, 0.8);
         return {
             enter: (target, fn)=>{
                 (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
                     autoAlpha: 1,
+                    duration: option?.enter ?? 0.2
+                });
+                if (drawerTarget) (0, ($parcel$interopDefault($c5L0i$gsap))).to(drawerTarget, {
+                    scale: drawerScale,
                     duration: option?.enter ?? 0.2
                 });
                 (0, ($parcel$interopDefault($c5L0i$gsap))).fromTo(target.querySelector(`.${CLASSLIST.CONTAINER}`), {
@@ -273,6 +281,10 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                     duration: option?.leave ?? 0.2
                 }).eventCallback("onComplete", ()=>{
                     fn && fn(target);
+                });
+                if (drawerTarget) (0, ($parcel$interopDefault($c5L0i$gsap))).to(drawerTarget, {
+                    scale: 1,
+                    duration: option?.leave ?? 0.2
                 });
                 (0, ($parcel$interopDefault($c5L0i$gsap))).to(overlay, {
                     autoAlpha: 0,
