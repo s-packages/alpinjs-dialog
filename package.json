@@ -1,6 +1,6 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.73",
+  "version": "1.0.74",
   "description": "dialog for AlpineJS",
   "main": "dist/index.js",
   "source": "index.js",
@@ -26,13 +26,13 @@
   "author": "LY SARI",
   "license": "ISC",
   "dependencies": {
-    "gsap": "^3.12.2",
-    "parcel-bundler": "^1.12.5"
+    "gsap": "^3.12.2"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",
     "alpinejs": "^3.13.2",
-    "parcel": "^2.8.3"
+    "parcel": "^2.8.3",
+    "parcel-bundler": "^1.12.5"
   },
   "files": [
     "dist"
