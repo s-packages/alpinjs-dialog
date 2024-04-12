@@ -44,6 +44,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 show: false,
                 mainElement: main,
                 el: main.cloneNode(true),
+                persist: false,
                 data: null,
                 addClass: getConfig(el, "addClass"),
                 addOverlayClass: getConfig(el, "addOverlayClass"),
@@ -62,6 +63,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 name: expression,
                 props: {},
                 validClose: undefined,
+                processing: false,
                 afterOpen: ()=>{},
                 beforeClose: ()=>{},
                 afterClose: ()=>{}
@@ -98,6 +100,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                     dialog["props"] = config.props ?? {};
                     dialog.show = true;
                     dialog.drawer = config.drawer;
+                    dialog.persist = config.persist ?? false;
                     onDialogOpen(dialog);
                 },
                 close (data) {
@@ -128,6 +131,7 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         }
     };
     function onDialogOpen(dialog) {
+        dialog.processing = true;
         clickAway(dialog.el, ()=>{
             if (dialog.config.backdrop) onDialogClose(dialog);
         });
@@ -148,9 +152,12 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         animate(dialog.config.position, dialog?.config?.animate, dialog).enter(dialog.el, ()=>{
             dialog.afterOpen(dialog);
             dialog.el.dispatchEvent(EVENT.onReady(dialog));
+            dialog.processing = false;
         });
     }
     function onDialogClose(dialog, data) {
+        if (dialog.processing) return;
+        dialog.processing = true;
         dialog.beforeClose(dialog);
         if (typeof dialog?.validClose === "function") {
             if (!dialog.validClose()) return;
@@ -159,10 +166,12 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
         animate(dialog.config.position, dialog?.config?.animate, dialog).leave(dialog.el, ()=>{
             dialog.show = false;
             overlay.remove();
+            const persistEL = dialog.el.cloneNode(true);
             dialog.el.remove();
-            dialog.el = dialog.mainElement.cloneNode(true);
+            dialog.el = dialog.persist ? persistEL : dialog.mainElement.cloneNode(true);
             dialog.afterClose(data);
             dialog.el.dispatchEvent(EVENT.onClose(dialog));
+            dialog.processing = false;
         });
     }
     function addClass(el, _class = []) {

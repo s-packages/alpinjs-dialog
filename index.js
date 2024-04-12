@@ -32,6 +32,7 @@ export default function (Alpine, globalConfig) {
             show: false,
             mainElement: main,
             el: main.cloneNode(true),
+            persist: false,
             data: null,
             addClass: getConfig(el, "addClass"),
             addOverlayClass: getConfig(el, "addOverlayClass"),
@@ -50,6 +51,7 @@ export default function (Alpine, globalConfig) {
             name: expression,
             props: {},
             validClose: undefined,
+            processing: false,
             afterOpen: () => {},
             beforeClose: () => {},
             afterClose: () => {},
@@ -93,6 +95,7 @@ export default function (Alpine, globalConfig) {
         dialog["props"] = config.props ?? {};
         dialog.show = true;
         dialog.drawer = config.drawer;
+        dialog.persist = config.persist ?? false;
         onDialogOpen(dialog);
       },
       close(data) {
@@ -126,6 +129,7 @@ export default function (Alpine, globalConfig) {
   };
 
   function onDialogOpen(dialog) {
+    dialog.processing = true;
     clickAway(dialog.el, () => {
       if (dialog.config.backdrop) {
         onDialogClose(dialog);
@@ -150,11 +154,14 @@ export default function (Alpine, globalConfig) {
       () => {
         dialog.afterOpen(dialog);
         dialog.el.dispatchEvent(EVENT.onReady(dialog));
+        dialog.processing = false;
       }
     );
   }
 
   function onDialogClose(dialog, data) {
+    if (dialog.processing) return;
+    dialog.processing = true;
     dialog.beforeClose(dialog);
     if (typeof dialog?.validClose === "function") {
       if (!dialog.validClose()) return;
@@ -167,10 +174,14 @@ export default function (Alpine, globalConfig) {
       () => {
         dialog.show = false;
         overlay.remove();
+        const persistEL = dialog.el.cloneNode(true);
         dialog.el.remove();
-        dialog.el = dialog.mainElement.cloneNode(true);
+        dialog.el = dialog.persist
+          ? persistEL
+          : dialog.mainElement.cloneNode(true);
         dialog.afterClose(data);
         dialog.el.dispatchEvent(EVENT.onClose(dialog));
+        dialog.processing = false;
       }
     );
   }

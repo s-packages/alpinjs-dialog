@@ -42,10 +42,11 @@ Alpine.data("demo", () => ({
       data: {
         show: true,
       }, // pass data into dialog
+      persist: false, // keep dialog in dom
       config: {
         width: "700px",
         // height: "200vh",
-        position: "bottom", // center , left, right
+        position: "right", // center , left, right
         backdrop: true, //set true click away to close
         blur: 0, //set true to blur overlay,
         animate: {
