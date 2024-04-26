@@ -13,6 +13,7 @@
   <div x-data="demo" class="drawer">
     <button @click="openDialog">Show Dialog</button>
     <span x-text="count"></span>
+    <span x-text="nested?.number"></span>
     <!-- <template x-dialog="dialogName01" position="left" backdrop="true">
         <div>
           <h1>Dialog Working!</h1>
@@ -26,6 +27,7 @@
         <button @click="close">Close Dialog</button>
         <button @click="appendText">Append Text</button>
         <button @click="propsClick">Props Click</button>
+        <button @click="actionClick">Change Nested Data</button>
         <p>
           <input type="checkbox" x-model="canClose" id="close">
           <label for="close">Allow Close</label>
@@ -36,7 +38,9 @@
         Alpine.data("dialog", () => ({
           canClose: false,
           formInput: null,
+          data: null,
           init() {
+            this.data = this.$dialog("dialogName").data;
             // this.$dialog("dialogName").validClose(() => this.canClose || this.formInput === "close");
             this.$dialog("dialogName").target.addEventListener(
               "dialogReady",
@@ -45,7 +49,7 @@
                 console.log("dialogReady", e.detail);
               }
             );
-            console.log("dialog init", this.$dialog("dialogName").data);
+            console.log(this.data);
           },
           appendText() {
             const child = document.createElement("p");
@@ -54,6 +58,9 @@
           },
           propsClick() {
             this.$dialog("dialogName").props.click(1);
+          },
+          actionClick() {
+            this.data.nested.number +=1;
           },
           close() {
             this.$dialog("dialogName").close(true);

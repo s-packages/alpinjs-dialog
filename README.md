@@ -1,4 +1,4 @@
-# alpinjs-dialog
+# alpinjs-dialog@1.0.8
 
 Dialog component for Alpine.js
 
@@ -135,3 +135,33 @@ import :
       ....
     </template>
 ```
+
+## API
+
+| Property | Type | Description | Value |
+|-----------|------|--------------|-------|
+| show | `boolean` | Dialog active status | `true`,`false` |
+| persist | `boolean` | Persist the dialog content | `true`,`false` |
+| data | `any` | Data to be passed to the dialog |  |
+| addClass | `string[]` | Additional CSS classes to add to the dialog |  |
+| addOverlayClass | `string[]` | Additional CSS classes to add to the overlay |  |
+| drawer | `string` | Drawer element class |  |
+| config | `object` | Configuration options for the dialog |  |
+| config.width | `string` | Width of the dialog |  |
+| config.height | `string` | Height of the dialog |  |
+| config.position | `string` | Position of the dialog | `center`,`right`,`left`,`top`,`bottom` |
+| config.backdrop | `boolean` | Show backdrop or not | `true`,`false` |
+| config.blur | `number` | Blur the background or not |  |
+| config.animate.enter | `number` | Animation duration for enter transition |  |
+| config.animate.leave | `number` | Animation duration for leave transition |  |
+| props | `object` | Additional props to be passed to the dialog |  |
+| processing | `boolean` | Indicates if the dialog is processing or not | `true`,`false` |
+| afterOpen | `function` | Callback function after the dialog is opened |  |
+| beforeClose | `function` | Callback function before the dialog is closed |  |
+| afterClose | `function` | Callback function after the dialog is closed |  |
+| target | HTML element reference | The dialog element |  |
+| open(config = {}) | `function` | Function to open the dialog with configuration options |  |
+| close(data) | `function` | Function to close the dialog and pass data |  |
+| data | `any` | Get the dialog data |  |
+| rawData | `any` | Get a clone of the dialog data |  |
+| validClose(fn) | `function` | Set the function to validate if the dialog can be closed or not |  |

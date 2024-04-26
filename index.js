@@ -104,6 +104,9 @@ export default function (Alpine, globalConfig) {
       get data() {
         return dialog?.data;
       },
+      get rawData() {
+        return Object.assign({}, dialog?.data);
+      },
       props: dialog?.props,
       /**
        * @param {Function} fn

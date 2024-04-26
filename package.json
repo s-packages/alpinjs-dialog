@@ -1,6 +1,6 @@
 {
   "name": "alpinjs-dialog",
-  "version": "1.0.76",
+  "version": "1.0.8",
   "description": "dialog for AlpineJS",
   "main": "dist/index.js",
   "source": "index.js",
@@ -36,5 +36,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-packages/alpinjs-dialog.git"
+  }
 }

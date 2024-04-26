@@ -109,6 +109,9 @@ function $43d7963e56408b24$export$2e2bcd8739ae039(Alpine, globalConfig) {
                 get data () {
                     return dialog?.data;
                 },
+                get rawData () {
+                    return Object.assign({}, dialog?.data);
+                },
                 props: dialog?.props,
                 /**
        * @param {Function} fn

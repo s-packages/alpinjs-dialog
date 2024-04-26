@@ -12,6 +12,9 @@ window.Alpine = Alpine;
 
 Alpine.data("demo", () => ({
   count: 0,
+  nested: {
+    number: 0,
+  },
   init() {
     this.$dialog(() => {
       // wait for dialog created
@@ -40,7 +43,7 @@ Alpine.data("demo", () => ({
     this.$dialog("dialogName").open({
       addClass: ["custom-class-1", "custom-class-2"], //class as array
       data: {
-        show: true,
+        nested: this.nested,
       }, // pass data into dialog
       persist: false, // keep dialog in dom
       config: {
