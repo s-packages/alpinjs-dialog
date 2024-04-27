@@ -1,51 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Collection.js</title>
-    <script type="module" src="./test.js"></script>
-  </head>
-  <body>
-    <div x-data="demo">
-      <button @click="openDialog">Show Dialog</button>
-      <span x-text="count"></span>
 
-      <template x-dialog="dialogName">
-        <div x-data="dialog" class="demo">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collection.js</title>
+  <script type="module" src="./test.js"></script>
+</head>
+
+<body>
+  <div x-data="demo" class="drawer">
+    <button @click="openDialog">Show Dialog</button>
+    <span x-text="count"></span>
+    <span x-text="nested?.number"></span>
+    <!-- <template x-dialog="dialogName01" position="left" backdrop="true">
+        <div>
           <h1>Dialog Working!</h1>
           <p>Click Away to close</p>
-          <button @click="close">Close Dialog</button>
-          <button @click="appendText">Append Text</button>
-          <button @click="propsClick">Props Click</button>
         </div>
-        <script>
-          Alpine.data("dialog", () => ({
-            init() {
-              this.$dialog("dialogName").target.addEventListener(
-                "dialogReady",
-                (e) => {
-                  // dialog is ready
-                  console.log("dialogReady", e.detail);
-                }
-              );
-              console.log("dialog init", this.$dialog("dialogName").data());
-            },
-            appendText() {
-              const child = document.createElement("p");
-              child.innerText = "Hello World";
-              this.$root.appendChild(child)
-            },
-            propsClick(){
-              this.$dialog("dialogName").props.click(1);
-            },
-            close() {
-              this.$dialog("dialogName").close(true);
-            },
-          }));
-        </script>
-      </template>
-    </div>
-  </body>
+      </template> -->
+    <template x-dialog="dialogName">
+      <div x-data="dialog" class="demo">
+        <h1>Dialog Working!</h1>
+        <p>Click Away to close</p>
+        <button @click="close">Close Dialog</button>
+        <button @click="appendText">Append Text</button>
+        <button @click="propsClick">Props Click</button>
+        <button @click="actionClick">Change Nested Data</button>
+        <p>
+          <input type="checkbox" x-model="canClose" id="close">
+          <label for="close">Allow Close</label>
+        </p>
+        <input type="text" x-model="formInput" placeholder="type 'close' for allow close">
+      </div>
+      <script>
+        Alpine.data("dialog", () => ({
+          canClose: false,
+          formInput: null,
+          data: null,
+          init() {
+            this.data = this.$dialog("dialogName").data;
+            // this.$dialog("dialogName").validClose(() => this.canClose || this.formInput === "close");
+            this.$dialog("dialogName").target.addEventListener(
+              "dialogReady",
+              (e) => {
+                // dialog is ready
+                console.log("dialogReady", e.detail);
+              }
+            );
+            console.log(this.data);
+          },
+          appendText() {
+            const child = document.createElement("p");
+            child.innerText = "Hello World";
+            this.$root.appendChild(child);
+          },
+          propsClick() {
+            this.$dialog("dialogName").props.click(1);
+          },
+          actionClick() {
+            this.data.nested.number +=1;
+          },
+          close() {
+            this.$dialog("dialogName").close(true);
+          },
+        }));
+      </script>
+    </template>
+  </div>
+</body>
+
 </html>
