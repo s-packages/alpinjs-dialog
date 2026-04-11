@@ -2,13 +2,13 @@
   "name": "alpinjs-dialog",
   "version": "1.0.8",
   "description": "dialog for AlpineJS",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
   "source": "index.js",
-  "module": "dist/module.js",
+  "module": "dist/index.es.js",
   "scripts": {
-    "start": "parcel testing/index.html",
-    "dev": "parcel watch",
-    "build": "parcel build",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -29,10 +29,8 @@
     "gsap": "^3.12.2"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.8.3",
     "alpinejs": "^3.13.2",
-    "parcel": "^2.8.3",
-    "parcel-bundler": "^1.12.5"
+    "vite": "^8.0.8"
   },
   "files": [
     "dist"
